@@ -4,13 +4,18 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import com.sun.net.httpserver.HttpServer;
+
+import java.io.IOException;
+import java.net.InetSocketAddress;
+
 public class Server {
 
     static int portNumer = 8000;
     static Socket clientSocket = null;
 
     public static void main(String[] args) {
-
+        initHTTPServer();
         ServerSocket serverSocket = openToServer();
         System.out.println("Server socket started at port n: " + serverSocket.getLocalPort());
         Database db = new Database();
@@ -44,5 +49,19 @@ public class Server {
         }
 
         return serverSocket;
+    }
+
+    static void initHTTPServer() {
+        HttpServer server = null;
+        try {
+            server = HttpServer.create(new InetSocketAddress(8080), 0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Database db = new Database();
+        //server.createContext("/applications/myapp", new MyHandler());
+        server.createContext("/", new ClientHandlerHTTP());
+        server.setExecutor(null); // creates a default executor
+        server.start();
     }
 }

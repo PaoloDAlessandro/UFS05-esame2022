@@ -99,10 +99,10 @@ public class ClientHandler implements Runnable {
         for(int i = 0; i < wines.size(); i++) {
             if(wines.get(i).type.equals("red")) {
                 result += "{\"id\":" + wines.get(i).id +
-                    ", \"name\":\"" + wines.get(i).name +
-                    "\", \"price\":" + wines.get(i).price +
-                    ", \"type\":\"" + wines.get(i).type +
-                    "\" }, ";
+                        ", \"name\":\"" + wines.get(i).name +
+                        "\", \"price\":" + wines.get(i).price +
+                        ", \"type\":\"" + wines.get(i).type +
+                        "\" }, ";
             }
         }
 
@@ -146,17 +146,13 @@ public class ClientHandler implements Runnable {
     public void buildWines() {
         wines.add(new Wine(13,"Dom Perignon Vintage Moet & Chandon 2008",225.94, "white"));
         wines.add(new Wine(14,"Amarone della Valpolicella DOCG",29.70, "red"));
-            wines.add(new Wine(14,"Pignoli Radikon Radikon 2009",133.0, "red"));
+        wines.add(new Wine(14,"Pignoli Radikon Radikon 2009",133.0, "red"));
         wines.add(new Wine(124, "Pinot Nero Elena Walch Elena Walch 2018", 43.0, "red"));
     }
 
     String cleanResult(String result) {
         return result.substring(0, result.length() - 2) + "]";
     }
-
-
-
-
 
     void sort_by_price() {
         wines.sort((o1, o2) -> {
