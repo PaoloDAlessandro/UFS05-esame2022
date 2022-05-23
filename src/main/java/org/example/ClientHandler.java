@@ -59,20 +59,21 @@ public class ClientHandler implements Runnable {
                         out.println(s + " is not a command");
                         break;
                     case "red":
-                        String result = selectRedWines();
-                        out.println(result);
+                        out.println(selectRedWines());
                         break;
 
                     case "white":
-                        //out.println(gson.toJson(cities));
+                        out.println(selectWhiteWines());
                         break;
 
                     case "sorted_by_price":
+                        sort_by_price();
+                        out.println(gson.toJson(wines));
                         break;
 
                     case "sorted_by_name":
-                        //sort_by_name();
-                        //out.println(gson.toJson(cities));
+                        sort_by_name();
+                        out.println(gson.toJson(wines));
                         break;
                 }
 
@@ -80,8 +81,6 @@ public class ClientHandler implements Runnable {
                 System.out.println("Client: " + clientSocket.getLocalAddress() + " disconnected from the server");
                 break;
             }
-
-            if (s == "") break;
         }
     }
 
@@ -92,6 +91,7 @@ public class ClientHandler implements Runnable {
 
     */
 
+
     public String selectRedWines() {
         String result = "[";
         for(int i = 0; i < wines.size(); i++) {
@@ -99,10 +99,30 @@ public class ClientHandler implements Runnable {
                 result += "{\"id\":" + wines.get(i).id +
                     ", \"name\":\"" + wines.get(i).name +
                     "\", \"price\":" + wines.get(i).price +
-                    "\", \"type\":" + wines.get(i).type +
-                    " }, ";
+                    ", \"type\":\"" + wines.get(i).type +
+                    "\" }, ";
             }
         }
+
+        result = cleanResult(result);
+
+        return result;
+    }
+
+    public String selectWhiteWines() {
+        String result = "[";
+        for(int i = 0; i < wines.size(); i++) {
+            if(wines.get(i).type.equals("white")) {
+                result += "{\"id\":" + wines.get(i).id +
+                        ", \"name\":\"" + wines.get(i).name +
+                        "\", \"price\":" + wines.get(i).price +
+                        ", \"type\":\"" + wines.get(i).type +
+                        "\" }, ";
+            }
+        }
+
+        result = cleanResult(result);
+
         return result;
     }
 
@@ -117,41 +137,36 @@ public class ClientHandler implements Runnable {
         return s;
     }
 
-    private void tryReconnect() {
-        try {
-            clientSocket.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     public void buildWines() {
         wines.add(new Wine(13,"Dom Perignon Vintage Moet & Chandon 2008",225.94, "white"));
+        wines.add(new Wine(14,"Amarone della Valpolicella DOCG",29.70, "red"));
         wines.add(new Wine(14,"Pignoli Radikon Radikon 2009",133.0, "red"));
         wines.add(new Wine(124, "Pinot Nero Elena Walch Elena Walch 2018", 43.0, "red"));
     }
 
+    String cleanResult(String result) {
+        return result.substring(0, result.length() - 2) + "]";
+    }
 
 
 
 
-/*
 
-    void sort_by_temp() {
-        cities.sort((o1, o2) -> {
-            if (o1.getTemp() < o2.getTemp())
+    void sort_by_price() {
+        wines.sort((o1, o2) -> {
+            if (o1.getPrice() < o2.getPrice())
                 return 1;
-            if (o1.getTemp() > o2.getTemp())
+            if (o1.getPrice() > o2.getPrice())
                 return -1;
             return 0;
         });
     }
 
     void sort_by_name() {
-        cities.sort((o1, o2) -> {
+        wines.sort((o1, o2) -> {
             return o1.getName().compareTo(o2.getName());
         });
     }
-*/
 
 }
