@@ -13,10 +13,18 @@ public class ClientHandlerHTTP implements HttpHandler {
     public void handle(HttpExchange t) throws IOException {
         InputStream is = t.getRequestBody();
         URI uri = t.getRequestURI();
-        String query = uri.getQuery();
-        String result = getCommand(query);
+        String query = "";
 
-        String s = read(is); // .. read the request body
+        if (t.getRequestMethod().equals("POST")) {
+            query = read(is);
+        }
+        else {
+            query = uri.getQuery();
+            query = cleanQuery(query);
+
+        }
+
+        String result = getCommand(query);
 
         String response = "<!doctype html>\n" +
                 "<html lang=en>\n" +
@@ -28,8 +36,6 @@ public class ClientHandlerHTTP implements HttpHandler {
 
                 "</br>I'm the content" +
                 "</br>\n" +
-                s +
-
                 "</br>query:" +
                 "</br>\n" +
                 query +
@@ -60,12 +66,10 @@ public class ClientHandlerHTTP implements HttpHandler {
             System.out.println(s);
             received += s;
         }
-        return received;
+        return received.substring(4,received.length());
     }
 
     String getCommand(String query) {
-
-        query = cleanQuery(query);
         String result = "";
 
         switch (query) {
