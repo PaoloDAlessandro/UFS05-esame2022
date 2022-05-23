@@ -59,6 +59,7 @@ public class Server {
             e.printStackTrace();
         }
         //server.createContext("/applications/myapp", new MyHandler());
+
         server.createContext("/", new ClientHandlerHTTP());
         server.setExecutor(null); // creates a default executor
         server.start();
