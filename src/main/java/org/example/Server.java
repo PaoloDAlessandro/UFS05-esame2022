@@ -58,7 +58,6 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Database db = new Database();
         //server.createContext("/applications/myapp", new MyHandler());
         server.createContext("/", new ClientHandlerHTTP());
         server.setExecutor(null); // creates a default executor
