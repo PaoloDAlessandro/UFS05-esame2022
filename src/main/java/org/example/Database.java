@@ -62,11 +62,11 @@ public class Database {
 
 
         try {
-            sql = "CREATE TABLE `wines_list` ( `id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(200) NOT NULL , `temp` DOUBLE NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;";
+            sql = "CREATE TABLE `wines_list` ( `id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(255) NOT NULL , `price` DOUBLE NOT NULL , `type` VARCHAR(100) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;";
             stmt.executeUpdate(sql);
             System.out.println("Table created");
 
-            sql = "INSERT INTO cities (name, temp) VALUES ('Milan', 24.1), ('Rome', 27.2), ('Bologna', 25.6), ('Modena', 25.7);";
+            sql = "INSERT INTO `wines_list`(`name`, `price`, `type`) VALUES ('Dom Perignon Vintage Moet & Chandon 2008',225.94,'white'), ('Amarone della Valpolicella DOCG',29.70,'red'), ('Pignoli Radikon Radikon 2009',133.0,'red'), ('Pinot Nero Elena Walch Elena Walch 2018',43.0,'red')";
 
             stmt.executeUpdate(sql);
             System.out.println("table records added");

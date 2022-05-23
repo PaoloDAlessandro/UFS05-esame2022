@@ -15,6 +15,8 @@ public class ClientHandler implements Runnable {
     BufferedReader in;
     PrintWriter out;
     static ArrayList<Wine> wines = new ArrayList<Wine>();
+    DatabaseHandler dbh = null;
+
 
     ClientHandler (Socket clientSocket) {
         this.clientSocket = clientSocket;
@@ -23,6 +25,7 @@ public class ClientHandler implements Runnable {
     public void run () {
         this.buildWines();
         this.inizializeClientHandler();
+        this.inizializeDatabaseHandler();
         try {
             this.executeClientHandler();
         } catch (SocketException e) {
@@ -59,21 +62,20 @@ public class ClientHandler implements Runnable {
                         out.println(s + " is not a command");
                         break;
                     case "red":
-                        out.println(selectRedWines());
+                        out.println(dbh.selectRedWines());
                         break;
 
                     case "white":
-                        out.println(selectWhiteWines());
+                        out.println(dbh.selectWhiteWines());
                         break;
 
                     case "sorted_by_price":
                         sort_by_price();
-                        out.println(gson.toJson(wines));
+                        out.println(dbh.sort_by_price());
                         break;
 
                     case "sorted_by_name":
-                        sort_by_name();
-                        out.println(gson.toJson(wines));
+                        out.println(dbh.sort_by_name());
                         break;
                 }
 
@@ -126,6 +128,9 @@ public class ClientHandler implements Runnable {
         return result;
     }
 
+    void inizializeDatabaseHandler() {
+        dbh = new DatabaseHandler();
+    }
 
     String receive() {
         String s = "";
@@ -141,7 +146,7 @@ public class ClientHandler implements Runnable {
     public void buildWines() {
         wines.add(new Wine(13,"Dom Perignon Vintage Moet & Chandon 2008",225.94, "white"));
         wines.add(new Wine(14,"Amarone della Valpolicella DOCG",29.70, "red"));
-        wines.add(new Wine(14,"Pignoli Radikon Radikon 2009",133.0, "red"));
+            wines.add(new Wine(14,"Pignoli Radikon Radikon 2009",133.0, "red"));
         wines.add(new Wine(124, "Pinot Nero Elena Walch Elena Walch 2018", 43.0, "red"));
     }
 
